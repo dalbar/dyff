@@ -54,9 +54,26 @@ type Diff struct {
 // Report encapsulates the actual end-result of the comparison: The input data
 // and the list of differences
 type Report struct {
-	From  ytbx.InputFile
-	To    ytbx.InputFile
-	Diffs []Diff
+	From ytbx.InputFile
+	To   ytbx.InputFile
+
+	Filter *ytbx.Path
+	Diffs  []Diff
+}
+
+func (r Report) ListDifferences() []Diff {
+	if r.Filter != nil {
+		var tmp []Diff
+		for i, diff := range r.Diffs {
+			if r.Filter.String() == diff.Path.String() {
+				tmp = append(tmp, r.Diffs[i])
+			}
+		}
+
+		return tmp
+	}
+
+	return r.Diffs
 }
 
 // ReportWriter defines the interface required for types that can write reports

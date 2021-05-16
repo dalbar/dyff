@@ -484,6 +484,21 @@ example_two
 			Expect(ok).To(BeTrue())
 			Expect(exitCode.Value).To(Equal(255))
 		})
+
+		It("should create a report and filter differences by using the provided path", func() {
+			out, err := dyff("between", "--omit-header", "--filter", "/yaml/map/whitespaces", assets("examples", "from.yml"), assets("examples", "to.yml"))
+			Expect(err).ToNot(HaveOccurred())
+
+			Expect(out).To(Equal(`
+yaml.map.whitespaces
+  ± whitespace only change
+    - Strings·can··have·whitespaces.     + Strings·can··have·whitespaces.↵
+                                           ↵
+                                           ↵
+
+
+`))
+		})
 	})
 
 	Context("last-applied command", func() {

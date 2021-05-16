@@ -40,6 +40,7 @@ type compareSettings struct {
 	NonStandardIdentifierGuessCountThreshold int
 	IgnoreOrderChanges                       bool
 	KubernetesEntityDetection                bool
+	FilterPath                               *ytbx.Path
 }
 
 type compare struct {
@@ -115,7 +116,7 @@ func CompareInputFiles(from ytbx.InputFile, to ytbx.InputFile, compareOptions ..
 		result = append(result, diffs...)
 	}
 
-	return Report{from, to, result}, nil
+	return Report{From: from, To: to, Diffs: result}, nil
 }
 
 func (compare *compare) objects(path ytbx.Path, from *yamlv3.Node, to *yamlv3.Node) ([]Diff, error) {

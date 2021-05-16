@@ -91,6 +91,15 @@ types are: YAML (http://yaml.org/) and JSON (http://json.org/).
 			return wrap.Errorf(err, "failed to compare input files")
 		}
 
+		if reportOptions.filterPath != "" {
+			path, err := ytbx.ParseGoPatchStylePathString(reportOptions.filterPath)
+			if err != nil {
+				return wrap.Errorf(err, "failed to set path filter, because path %s cannot be parsed", reportOptions.filterPath)
+			}
+
+			report.Filter = &path
+		}
+
 		return writeReport(cmd, report)
 	},
 }

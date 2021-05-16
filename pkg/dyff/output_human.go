@@ -78,7 +78,7 @@ func (report *HumanReport) WriteReport(out io.Writer) error {
 `,
 			ytbx.HumanReadableLocationInformation(report.From),
 			ytbx.HumanReadableLocationInformation(report.To),
-			bunt.Style(text.Plural(len(report.Diffs), "difference"), bunt.Bold()))
+			bunt.Style(text.Plural(len(report.ListDifferences()), "difference"), bunt.Bold()))
 
 		writer.WriteString(bunt.Style(
 			header,
@@ -100,7 +100,7 @@ func (report *HumanReport) WriteReport(out io.Writer) error {
 	}
 
 	// Loop over the diff and generate each report into the buffer
-	for _, diff := range report.Diffs {
+	for _, diff := range report.ListDifferences() {
 		if err := report.generateHumanDiffOutput(writer, diff, report.UseGoPatchPaths, showPathRoot); err != nil {
 			return err
 		}

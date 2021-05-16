@@ -46,7 +46,7 @@ func (report *BriefReport) WriteReport(out io.Writer) error {
 	writer := bufio.NewWriter(out)
 	defer writer.Flush()
 
-	noOfChanges := bunt.Style(text.Plural(len(report.Diffs), "change"), bunt.Bold())
+	noOfChanges := bunt.Style(text.Plural(len(report.ListDifferences()), "change"), bunt.Bold())
 	niceFrom := ytbx.HumanReadableLocationInformation(report.From)
 	niceTo := ytbx.HumanReadableLocationInformation(report.To)
 
